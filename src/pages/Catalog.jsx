@@ -38,16 +38,11 @@ export default function Catalog() {
     return [Math.floor(Math.min(...prices)), Math.ceil(Math.max(...prices))];
   }, [allProducts]);
 
-  const [priceRange, setPriceRange] = useState([0, 1000]);
-
-  useEffect(() => {
-    setPriceRange(bounds);
-  }, [bounds[0], bounds[1]]);
+  const [priceRange, setPriceRange] = useState(null);
+  const activePriceRange = priceRange ?? bounds;
 
   useEffect(() => {
     let alive = true;
-    setLoading(true);
-    setError(null);
     Promise.all([fetchProducts(), fetchCategories()])
       .then(([products, cats]) => {
         if (!alive) return;
@@ -64,10 +59,10 @@ export default function Catalog() {
   const results = useMemo(() => {
     let list = searchProducts(allProducts, debouncedQuery);
     list = filterByCategory(list, category);
-    list = filterByPriceRange(list, priceRange);
+    list = filterByPriceRange(list, activePriceRange);
     list = sortProducts(list, sort);
     return list;
-  }, [allProducts, debouncedQuery, category, priceRange, sort]);
+  }, [allProducts, debouncedQuery, category, activePriceRange, sort]);
 
   const updateParam = (key, value) => {
     const next = new URLSearchParams(searchParams);
@@ -95,7 +90,7 @@ export default function Catalog() {
             categories={categories}
             category={category}
             onCategoryChange={(c) => updateParam('category', c)}
-            priceRange={priceRange}
+            priceRange={activePriceRange}
             bounds={bounds}
             onPriceChange={setPriceRange}
             sort={sort}

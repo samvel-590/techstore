@@ -15,14 +15,27 @@ export default function Header() {
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.get('q') || '');
   const [scrolled, setScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(max > 0 ? Math.min(window.scrollY / max, 1) : 0);
+    };
+    onScroll();
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!mobileOpen) return undefined;
+    const onKeyDown = (event) => event.key === 'Escape' && setMobileOpen(false);
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [mobileOpen]);
 
   const submitSearch = (e) => {
     e.preventDefault();
@@ -38,18 +51,20 @@ export default function Header() {
 
   return (
     <header className={`header ${scrolled ? 'header--scrolled' : ''}`}>
+      <span className="header__progress" style={{ transform: `scaleX(${scrollProgress})` }} aria-hidden="true" />
       <div className="container header__inner">
         <button
           className="header__burger"
           onClick={() => setMobileOpen((v) => !v)}
-          aria-label="Открыть меню"
+          aria-label={mobileOpen ? 'Закрыть меню' : 'Открыть меню'}
           aria-expanded={mobileOpen}
+          aria-controls="mobile-navigation"
         >
           {mobileOpen ? <FiX /> : <FiMenu />}
         </button>
 
         <Link to="/" className="header__logo" onClick={() => setMobileOpen(false)}>
-          <span className="header__logo-mark">TS</span>
+          <span className="header__logo-mark"><i />TS</span>
           <span className="header__logo-text">Tech<em>Store</em></span>
         </Link>
 
@@ -141,6 +156,7 @@ export default function Header() {
         {mobileOpen && (
           <motion.div
             className="header__mobile"
+            id="mobile-navigation"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}

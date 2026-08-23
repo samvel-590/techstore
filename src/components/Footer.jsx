@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FiGithub, FiTwitter, FiInstagram } from 'react-icons/fi';
+import { FiArrowUpRight, FiHeart, FiShoppingBag } from 'react-icons/fi';
 import './Footer.css';
 
 export default function Footer() {
@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="container footer__inner">
         <div className="footer__brand">
           <div className="footer__logo">
-            <span className="header__logo-mark">TS</span>
+            <span className="header__logo-mark"><i />TS</span>
             <span className="footer__logo-text">Tech<em>Store</em></span>
           </div>
           <p className="footer__tagline">Технология, выбранная с точностью.</p>
@@ -29,19 +29,19 @@ export default function Footer() {
             <Link to="/catalog">Все товары</Link>
           </div>
           <div className="footer__col">
-            <h4>Соцсети</h4>
+            <h4>Быстрый доступ</h4>
             <div className="footer__socials">
-              <a href="#" aria-label="GitHub"><FiGithub /></a>
-              <a href="#" aria-label="Twitter"><FiTwitter /></a>
-              <a href="#" aria-label="Instagram"><FiInstagram /></a>
+              <Link to="/catalog" aria-label="Открыть каталог"><FiArrowUpRight /></Link>
+              <Link to="/favorites" aria-label="Открыть избранное"><FiHeart /></Link>
+              <Link to="/cart" aria-label="Открыть корзину"><FiShoppingBag /></Link>
             </div>
           </div>
         </div>
       </div>
       <div className="footer__bottom">
         <div className="container footer__bottom-inner">
-          <span>© {new Date().getFullYear()} TechStore. Учебный проект.</span>
-          <span className="mono footer__version">v1.0.0</span>
+          <span>© {new Date().getFullYear()} TechStore. Технологии, выбранные точно.</span>
+          <span className="mono footer__version">DESIGNED FOR EVERYDAY</span>
         </div>
       </div>
     </footer>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiHeart, FiShoppingBag, FiArrowLeft, FiCheck, FiMinus, FiPlus, FiTruck, FiShield, FiRefreshCw } from 'react-icons/fi';
 import { fetchProductById, fetchProducts } from '../api/products';
@@ -34,9 +34,6 @@ export default function ProductDetails() {
 
   useEffect(() => {
     let alive = true;
-    setLoading(true);
-    setError(null);
-    setQty(1);
     fetchProductById(id)
       .then((p) => {
         if (!alive) return;

@@ -77,7 +77,7 @@ export default function ProductCard({ product, index = 0 }) {
             className={`pcard__cart-btn ${inCart ? 'pcard__cart-btn--added' : ''}`}
             onClick={() => addItem(product)}
             whileTap={{ scale: 0.9 }}
-            aria-label="Добавить в корзину"
+            aria-label={inCart ? 'Добавить ещё один товар' : 'Добавить в корзину'}
           >
             {inCart ? <FiCheck /> : <FiShoppingBag />}
           </motion.button>

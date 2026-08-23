@@ -69,7 +69,10 @@
   background: var(--surface);
   font-size: 13.5px;
   color: var(--text);
+  transition: border-color .2s ease, box-shadow .2s ease;
 }
+.filters-bar__select:hover{ border-color: var(--accent); }
+.filters-bar__select:focus{ outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 
 .filters-bar__mobile-header{ display: none; }
 .filters-drawer-backdrop{ display: none; }
@@ -93,7 +96,10 @@
     border: 1px solid var(--border);
     font-size: 13.5px;
     font-weight: 500;
+    background: var(--surface);
+    transition: border-color .2s ease, color .2s ease, transform .2s ease;
   }
+  .filters-bar__toggle:hover{ border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
   .filters-drawer-backdrop{
     display: block;
     position: fixed; inset: 0; background: rgba(8,10,14,.5);

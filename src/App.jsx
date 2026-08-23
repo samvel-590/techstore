@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useParams } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './context/ToastContext';
@@ -14,6 +14,11 @@ import Cart from './pages/Cart';
 import Favorites from './pages/Favorites';
 import NotFound from './pages/NotFound';
 
+function ProductDetailsRoute() {
+  const { id } = useParams();
+  return <ProductDetails key={id} />;
+}
+
 function AnimatedRoutes() {
   const location = useLocation();
   return (
@@ -21,7 +26,7 @@ function AnimatedRoutes() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/catalog" element={<Catalog />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/product/:id" element={<ProductDetailsRoute />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="*" element={<NotFound />} />
