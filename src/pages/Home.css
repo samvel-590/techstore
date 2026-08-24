@@ -334,7 +334,7 @@
 .feature:hover{ transform: translateY(-6px); border-color: color-mix(in srgb, var(--accent) 38%, var(--border)); box-shadow: var(--shadow-lg); }
 .feature__icon{ width: 42px; height: 42px; padding: 10px; margin-bottom: auto; border-radius: 13px; color: var(--accent); background: var(--accent-soft); font-size: 20px; transition: transform .3s ease; }
 .feature:hover .feature__icon{ transform: rotate(-8deg) scale(1.08); }
-.feature h4{ font-size: 16px; }
+.feature h3{ font-size: 16px; }
 .feature p{ font-size: 13px; color: var(--text-muted); line-height: 1.55; }
 
 .cta-section{

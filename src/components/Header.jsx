@@ -13,7 +13,7 @@ export default function Header() {
   const { count: favCount } = useFavorites();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [query, setQuery] = useState(searchParams.get('q') || '');
+  const routeQuery = searchParams.get('q') || '';
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -37,10 +37,22 @@ export default function Header() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [mobileOpen]);
 
-  const submitSearch = (e) => {
-    e.preventDefault();
-    navigate(query.trim() ? `/catalog?q=${encodeURIComponent(query.trim())}` : '/catalog');
+  const submitSearch = (event) => {
+    event.preventDefault();
+    const formQuery = new FormData(event.currentTarget).get('q')?.toString().trim() || '';
+    const nextParams = new URLSearchParams();
+    if (formQuery) nextParams.set('q', formQuery);
+    navigate({
+      pathname: '/catalog',
+      search: nextParams.size ? `?${nextParams.toString()}` : '',
+    });
     setMobileOpen(false);
+  };
+
+  const submitSearchFromKeyboard = (event) => {
+    if (event.key !== 'Enter') return;
+    event.preventDefault();
+    event.currentTarget.form?.requestSubmit();
   };
 
   const links = [
@@ -82,13 +94,17 @@ export default function Header() {
         </nav>
 
         <form className="header__search" onSubmit={submitSearch} role="search">
-          <FiSearch className="header__search-icon" aria-hidden="true" />
+          <button className="header__search-submit" type="submit" aria-label="Искать">
+            <FiSearch aria-hidden="true" />
+          </button>
           <input
+            key={`desktop-${routeQuery}`}
             ref={inputRef}
             type="search"
+            name="q"
             placeholder="Найти технику…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            defaultValue={routeQuery}
+            onKeyDown={submitSearchFromKeyboard}
             aria-label="Поиск товаров"
           />
         </form>
@@ -163,12 +179,16 @@ export default function Header() {
             transition={{ duration: 0.25, ease: 'easeInOut' }}
           >
             <form className="header__search header__search--mobile" onSubmit={submitSearch} role="search">
-              <FiSearch className="header__search-icon" aria-hidden="true" />
+              <button className="header__search-submit" type="submit" aria-label="Искать">
+                <FiSearch aria-hidden="true" />
+              </button>
               <input
+                key={`mobile-${routeQuery}`}
                 type="search"
+                name="q"
                 placeholder="Найти технику…"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                defaultValue={routeQuery}
+                onKeyDown={submitSearchFromKeyboard}
                 aria-label="Поиск товаров"
               />
             </form>

@@ -272,7 +272,7 @@ export default function Home() {
               transition={{ duration: 0.4, delay: i * 0.06 }}
             >
               <f.icon className="feature__icon" />
-              <h4>{f.title}</h4>
+              <h3>{f.title}</h3>
               <p>{f.text}</p>
             </motion.div>
           ))}
