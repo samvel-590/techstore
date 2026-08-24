@@ -1,18 +1,4 @@
-const BASE_URL = 'https://fakestoreapi.com';
-
-async function request(path, { minDelay = 400 } = {}) {
-  const start = Date.now();
-  const res = await fetch(`${BASE_URL}${path}`);
-  if (!res.ok) {
-    throw new Error(`Ошибка сети: ${res.status} ${res.statusText}`);
-  }
-  const data = await res.json();
-  const elapsed = Date.now() - start;
-  if (elapsed < minDelay) {
-    await new Promise((r) => setTimeout(r, minDelay - elapsed));
-  }
-  return data;
-}
+import products from '../data/products.json';
 
 function enrichProduct(p) {
   const hasDiscount = p.id % 3 === 0;
@@ -28,22 +14,21 @@ function enrichProduct(p) {
 }
 
 export async function fetchProducts() {
-  const data = await request('/products');
-  return data.map(enrichProduct);
+  return products.map(enrichProduct);
 }
 
 export async function fetchProductById(id) {
-  const data = await request(`/products/${id}`, { minDelay: 250 });
-  return enrichProduct(data);
+  const product = products.find((item) => item.id === Number(id));
+  if (!product) throw new Error('Товар не найден');
+  return enrichProduct(product);
 }
 
 export async function fetchCategories() {
-  return request('/products/categories', { minDelay: 0 });
+  return [...new Set(products.map((item) => item.category))];
 }
 
 export async function fetchProductsByCategory(category) {
-  const data = await request(`/products/category/${encodeURIComponent(category)}`);
-  return data.map(enrichProduct);
+  return products.filter((item) => item.category === category).map(enrichProduct);
 }
 
 export function searchProducts(products, query) {

@@ -127,7 +127,13 @@ export default function Home() {
             <div className="hero__product-no mono" aria-hidden="true">01 / SELECTED</div>
             <div className="hero__card hero__card--main">
               <div className="hero__card-shine" aria-hidden="true" />
-              {products[0]?.image && <img src={products[0].image} alt={products[0].title || 'Выбранный товар'} />}
+              {products[0]?.image && (
+                <img
+                  src={products[0].image}
+                  alt={products[0].title || 'Выбранный товар'}
+                  fetchPriority="high"
+                />
+              )}
             </div>
             <motion.div
               className="hero__chip hero__chip--1"
